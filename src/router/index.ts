@@ -15,6 +15,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '登录', requiresAuth: false }
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/Register.vue'),
+    meta: { title: '注册', requiresAuth: false }
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
@@ -96,7 +102,7 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('systemToken')
 
   // 2. 如果去的是登录页
-  if (to.path === '/login') {
+  if (to.path === '/login'|| to.path === '/register') {
     if (token) {
       // 已经登录了，就踢回首页
       return next('/')
