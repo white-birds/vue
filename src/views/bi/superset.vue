@@ -241,9 +241,24 @@ onMounted(async () => {
     initIframeUrl()
 
     const res = await http.get('/superset/dashboards')
-    let list =[]
-    if (Array.isArray(res)) list = res
-    else if (res && res.result && Array.isArray(res.result)) list = res.result
+    let list: Array<{ name: string; embeddedUuid: string }> = []
+    
+    // 处理后端返回的数据
+    if (Array.isArray(res)) {
+      // 如果直接是数组，转换字段名
+      list = res.map((item: any) => ({
+        name: item.name,
+        embeddedUuid: item.uuid || item.embeddedUuid
+      }))
+    } else if (res && res.result && Array.isArray(res.result)) {
+      // 如果在 result 字段中，转换字段名
+      list = res.result.map((item: any) => ({
+        name: item.name,
+        embeddedUuid: item.uuid || item.embeddedUuid
+      }))
+    }
+
+    console.log('📊 获取到的仪表板列表:', list)
 
     if (list.length > 0) {
       dashboards.value = list
@@ -255,6 +270,7 @@ onMounted(async () => {
       loadSuperset()
     } else {
       loading.value = false
+      message.warning('暂无可用的仪表板')
     }
   } catch (err) {
     loading.value = false

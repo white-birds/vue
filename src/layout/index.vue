@@ -77,7 +77,7 @@
               <a-avatar :size="32" style="background-color: #1890ff">
                 <template #icon><UserOutlined /></template>
               </a-avatar>
-              <span class="username">{{ userInfo?.realname || 'Admin' }}</span>
+              <span class="username">{{ userInfo?.username || 'Admin' }}</span>
             </div>
             <template #overlay>
               <a-menu @click="handleUserMenuClick">

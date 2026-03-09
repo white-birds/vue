@@ -1,4 +1,7 @@
 node_modules/ 
 dist/ 
 .env 
-.env.local 
+.env.local
+*.tar
+*.tar.gz
+aihomBI.tar

@@ -146,9 +146,13 @@ const handleLogin = async () => {
       console.error("❌ 未找到 Token, res结构:", res)
       message.error(res?.message || '登录失败，账号或密码错误')
     }
-  } catch (error) {
-    console.error('网络请求错误:', error)
-    message.error('接口请求404或网络异常，请检查后端是否启动')
+  } catch (error: any) {
+    // 如果是业务错误（success: false），http.ts 已经显示过错误了，这里不再显示
+    // 只处理真正的网络错误
+    if (!error.message && !error.success) {
+      console.error('网络请求错误:', error)
+      // 网络错误已经在 http.ts 中处理了，这里不再重复显示
+    }
   } finally {
     loading.value = false
   }
